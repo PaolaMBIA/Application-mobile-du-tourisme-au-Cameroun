@@ -55,7 +55,8 @@ export default function LoginScreen({navigation}) {
                     keyboardShouldPersistTaps="always">
                     <Image
                         style={styles.logo}
-                        source={require('../images/fond1.png')}
+                        source={require('../images/fond_co.png')}
+                        blurRadius={0.34}
                     />
                     <View style={styles.containerInput}>
                         <Image
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
         paddingLeft: 16
     },
     button: {
-        backgroundColor: 'rgba(255,140,0,0.8)',
+        backgroundColor: 'rgba(29, 84, 84, 0.6)',
         marginLeft: 30,
         marginRight: 30,
         marginTop: 20,
@@ -165,11 +166,11 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     footerText: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#2e2e2d'
     },
     footerLink: {
-        color: "rgb(255,140,0)",
+        color: "rgb(29, 84, 84)",
         fontWeight: "bold",
         fontSize: 16
     }

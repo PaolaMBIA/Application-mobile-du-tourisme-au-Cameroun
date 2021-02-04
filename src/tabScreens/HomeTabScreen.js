@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import { Text, View, StyleSheet, Button, Image } from 'react-native'
-import { Card } from 'react-native-elements';
+import { Text, View, StyleSheet, Button, Image, TouchableOpacity, ImageBackground } from 'react-native'
+
 import { ScrollView } from 'react-native-gesture-handler';
 
+import Card from '../components/Card.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { firebase } from '../firebase/config';
 
@@ -10,8 +11,8 @@ const post = [
     {
         pictureProfil: '../images/image.jpeg',
         pseudo: "Kimy",
-        picturePost: "https://i.pinimg.com/originals/22/61/09/2261090ee055b3abe9658228f5a535c7.jpg",
-        title: "Centre touristique de Nkolandom",
+        picturePost: 'https://i.pinimg.com/originals/22/61/09/2261090ee055b3abe9658228f5a535c7.jpg',
+        title: "Limbe",
         overview: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         comments: [{
             pseudoComment: "Bea",
@@ -44,8 +45,8 @@ const post = [
     {
         pictureProfil: '../images/image.jpeg',
         pseudo: "Christy",
-        picturePost: 'https://i.pinimg.com/originals/22/61/09/2261090ee055b3abe9658228f5a535c7.jpg',
-        title: "Limbe",
+        picturePost: "https://www.editions2015.com/cameroun/wp-content/uploads/2015/05/centre-touristique-nkolandom.jpg",
+        title: "Centre touristique de Nkolandom",
         overview: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         comments: [{
             pseudoComment: "Evrard",
@@ -78,7 +79,7 @@ export default function HomeTabScreen({navigation}) {
 
     
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../images/fondBody.jpg')} style={styles.container} blurRadius={0.7}>
             <View style={styles.header}>
                 <View style={styles.profil}>
                     <Image
@@ -92,49 +93,37 @@ export default function HomeTabScreen({navigation}) {
                 </View>
             </View>
             <View style={styles.body}>
+                <View style={styles.body1}></View>
                 <ScrollView>
                     {
-                        post.map(item => (
-                            <Card style={{borderRadius: 50}}>
-                                <Card.Title>
-                                <Image
-                        style={styles.img}
-                        source={require('../images/image.jpeg')}
-                    />
-                                    <Text>{item.pseudo}</Text>
-                                </Card.Title>
-                            <Card.Divider/>
-                            <Card.Image style={styles.myImPost}  source={{uri : item.picturePost }}>
-
-                                </Card.Image>
-                                <Text style={{marginBottom: 10}}>
-                                The idea with React Native Elements is more about component structure than actual design.
-                              </Text>
-                          </Card>
+                        post.map((item,index) => (
+                            <Card item={item} index={index} />
                         ))
                     }
-                    </ScrollView>
+                </ScrollView>
             </View>
-        </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        textAlign: "center",
+       // resizeMode: "cover",
+        justifyContent: "center"
     },
-    header: {   
+    header: {
         height: 100,
         marginTop: 20,
-        backgroundColor: "rgb(29, 84, 84)",
-        justifyContent:'space-between',
+        backgroundColor: "rgb(108, 97, 83)",
+        opacity:0.87,
+        justifyContent: 'space-between',
         flexDirection: "row",
     },
     profil: {
         width: 170,
         flexDirection: "row",
-        justifyContent: "space-evenly", 
+        justifyContent: "space-evenly",
         alignItems: "center"
     },
     profilIcon: {
@@ -143,13 +132,19 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     myIcon: {
-        color: "grey",
+        color: "rgb(135,206,235)",
         alignContent: "flex-end"
     },
     body: {
         flex: 1,
-        paddingTop: 30,
-        backgroundColor: "rgb(29, 84, 84)",
+        backgroundColor: "rgb(108, 97, 83)",
+        opacity:0.8,
+    },
+    body1: {
+        flex: 1,
+        height: "100%",
+        backgroundColor: "red",
+       // opacity:0.5,
     },
     input: {
         height: 48,
@@ -162,14 +157,10 @@ const styles = StyleSheet.create({
         marginRight: 30,
         paddingLeft: 16
     },
-    img : {
+    img: {
         width: 50,
         height: 50,
         borderRadius: 50
     },
-    myImPost: {
-        width: 150,
-        height: 150,
-        borderRadius: 20
-    }
+
 })

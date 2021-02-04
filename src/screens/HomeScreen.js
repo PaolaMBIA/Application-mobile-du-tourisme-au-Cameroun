@@ -35,11 +35,12 @@ export default function HomeScreen(props) {
                 },
             })}
             tabBarOptions={{
-               // showLabel: false,
-                activeTintColor: 'rgb(29, 84, 84)',
-                inactiveTintColor: 'grey',
+                showLabel: false,
+                activeTintColor: 'rgb(135,206,235)',
+                inactiveTintColor: 'white',
                 style: {
-                  //backgroundColor: "rgb(29, 84, 84)",
+                  backgroundColor: "rgb(108, 97, 83)",
+                  opacity:0.7,
                   borderTopColor: "rgb(29, 84, 84)"
                 }
             }}
