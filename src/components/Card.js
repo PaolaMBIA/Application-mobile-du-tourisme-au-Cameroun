@@ -3,6 +3,7 @@ import { View, ActivityIndicator, Text, StyleSheet, Button, Image, TouchableOpac
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar, Input} from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Card({item, index}) {
 
@@ -28,11 +29,25 @@ export default function Card({item, index}) {
                 <Text style={styles.myTimeStamp}>{item.timeStamp}</Text>
             </View>
             <View style={styles.myStylePost}>
-                <Text style={styles.myCardSubtitle}>{item.title}</Text>
-                <Image
-                    style={styles.myImPost}
-                    source={{ uri: item.picturePost }}
-                />
+              <Text style={styles.myCardSubtitle}>{item.title}</Text>
+              <ScrollView
+                  style={styles.myImPost}
+                  horizontal={true}
+                  contentContainerStyle={{ width: `${100 * 2}%` }}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEventThrottle={200}
+                  decelerationRate="fast"
+                  pagingEnabled
+              >
+                {
+                    item.picturePost.map(e => (
+                        <Image
+                        style={styles.myImPostItem}
+                        source={{ uri: e }}
+                        />
+                    ))
+                }
+              </ScrollView>
             </View>
             <View style={styles.myTextOverview}>
                 <Text style={styles.myIonText}>{item.overview}</Text>
@@ -230,8 +245,17 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
     },
     myImPost: {
+        flexDirection: "row",
+        width: 320,
+        height: 250,
+        borderRadius: 5,
+        alignSelf: "center",
+        marginBottom: 20
+    },
+    myImPostItem: {
         width: 310,
         height: 250,
+        margin: 1,
         borderRadius: 5,
         alignSelf: "center",
         marginBottom: 20

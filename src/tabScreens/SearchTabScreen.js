@@ -37,10 +37,14 @@ const Item = ({ item, onPress, style, bacground }) => (
             {/* <View style={[styles.myTopStyleList, {backgroundColor: bacground}]}></View>
             <View style={[styles.myTopStyleList2]}></View> */}
             <Text >{item.title}</Text>
-            <Image 
-                style={styles.myImagePost}
-                source={{ uri: item.picturePost }}
-            />
+            {
+                item.picturePost.slice(0,1).map(e => (
+                    <Image
+                    style={styles.myImagePost}
+                        source={{ uri: e }}
+                    />
+                ))
+            }
             {/* <View style={[styles.myStyleList, {backgroundColor: bacground}]}></View>
             <View style={[styles.myStyleList2]}></View> */}
         </TouchableOpacity>
@@ -142,17 +146,21 @@ export default function SearchTabScreen({ navigation }) {
                     <View style={styles.myResult}>
                         {
                             showResults &&
-                            <View>
+                            <ScrollView>
 
                                 {
                                     resultPost.mySearchPost.map((element, index) => (
                                         <View key={index}>
                                             <View style={styles.myStylePost}>
                                                 <Text style={styles.myCardSubtitle}>{element.title}</Text>
-                                                <Image
-                                                    style={styles.myImPost}
-                                                    source={{ uri: element.picturePost }}
-                                                />
+                                                {
+                                                    element.picturePost.map(e => (
+                                                        <Image
+                                                            style={styles.myImPost}
+                                                            source={{ uri: e }}
+                                                        />
+                                                    ))
+                                                }                                               
                                             </View>
                                             <View style={styles.myTextOverview}>
                                                 <Text style={styles.myIonText}>{element.overview}</Text>
@@ -160,7 +168,7 @@ export default function SearchTabScreen({ navigation }) {
                                         </View>
                                     ))
                                 }
-                            </View>
+                            </ScrollView>
                         }
                         
                     </View>
