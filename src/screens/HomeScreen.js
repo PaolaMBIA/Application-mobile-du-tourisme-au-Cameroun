@@ -22,12 +22,12 @@ export default function HomeScreen(props) {
 
                 if (route.name === 'Accueil') {
                     iconName = focused
-                    ? 'home-outline'
+                    ? 'home'
                     : 'home-outline';
                 } else if (route.name === 'Recherche') {
-                    iconName = focused ? 'search-circle-outline' : 'search-outline';
+                    iconName = focused ? 'search' : 'search-outline';
                 } else if (route.name === 'Mon compte') {
-                    iconName = focused ? 'person-circle-outline' : 'person-outline'
+                    iconName = focused ? 'person' : 'person-outline'
                 }
 
                 // You can return any component that you like here!
@@ -36,14 +36,26 @@ export default function HomeScreen(props) {
             })}
             tabBarOptions={{
                 showLabel: false,
-                activeTintColor: 'rgb(135,206,235)',
+                activeTintColor: 'rgb(29, 84, 84)',
                 inactiveTintColor: 'white',
+                //activeBackgroundColor: "white",
+                //tabStyle:{height:50},
                 style: {
-                  backgroundColor: "rgb(108, 97, 83)",
-                  opacity:0.7,
-                  borderTopColor: "rgb(29, 84, 84)"
-                }
-            }}
+                   backgroundColor: "rgb(108, 97, 83)",
+                    opacity: 0.7,  
+                    //borderWidth: 2,
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderColor:'#ccc'
+                },
+                indicatorStyle: {
+                    backgroundColor: 'blue',
+                    width: 50,
+                    borderWidth: 2,
+                    left:"18%"
+                },
+
+          }}
               
         >
             <Tab.Screen name="Accueil" component={HomeTabScreen} />

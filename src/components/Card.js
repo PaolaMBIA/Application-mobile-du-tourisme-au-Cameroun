@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator, Text, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator, Text, StyleSheet, Button, Image, TouchableOpacity, TextInput} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Avatar} from 'react-native-elements';
+import { Avatar, Input} from 'react-native-elements';
 
 export default function Card({item, index}) {
 
     const [showComments, setShowComments] = useState(false);
+    const [comments, setComments] = useState("")
     //const [showToast, setShowToast] = useState(false);
 
     function commentHandler() {
@@ -25,7 +27,7 @@ export default function Card({item, index}) {
               </View>
                 <Text style={styles.myTimeStamp}>{item.timeStamp}</Text>
             </View>
-          <View style={styles.myStylePost}>
+            <View style={styles.myStylePost}>
                 <Text style={styles.myCardSubtitle}>{item.title}</Text>
                 <Image
                     style={styles.myImPost}
@@ -57,8 +59,8 @@ export default function Card({item, index}) {
                 <View>
                     {
                         showComments && 
-                        item.comments.map(element => (
-                            <View style={styles.myComments}>
+                        item.comments.map((element,index) => (
+                            <View key={index} style={styles.myComments}>
                                 <Avatar
                                     //style={styles.myCommentImage}
                                     rounded
@@ -75,7 +77,22 @@ export default function Card({item, index}) {
                                 </View>    
                             </View>
                         ))
-                    }
+                  }
+                  {
+                      showComments &&
+                      <KeyboardAwareScrollView style={styles.myNewCommentsRow}>
+                          <TextInput
+                            style={styles.input}
+                            placeholder='Ajouter un commentaire ...'
+                            placeholderTextColor="whitesmoke"
+                            onChangeText={(text) => setComments(text)}
+                            value={comments}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                          />
+                          <Ionicons style={styles.styleIcon} name="send" size={20} color="whitesmoke" />
+                      </KeyboardAwareScrollView>
+                  }
                 </View>
             </View>
         </View>
@@ -124,7 +141,7 @@ const styles = StyleSheet.create({
 
     myCardSubtitle:{
         fontSize: 21,
-        color: "black",
+        color: "rgb(29, 84, 84)",
         textAlign: "center",
         marginBottom: 15,
         fontFamily: "sans-serif-condensed"
@@ -151,12 +168,38 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
 
+    styleIcon: {
+        position: "absolute",
+        top: 1,
+        right: 2, 
+        transform: [{
+            
+            rotateX: "50deg"
+        }, {
+            rotateY: "-30deg"
+        }, {
+            rotateZ: "-20deg"
+        }]
+    },
+
     myCommentsRow:{
         borderWidth: 1,
         borderColor: "transparent",
         backgroundColor:" rgba(29, 84, 84, 0.6)",
         margin: 10,
         width: 280
+    },
+    myNewCommentsRow:{
+        borderWidth: 1,
+        borderColor: "transparent",
+        backgroundColor: "rgb(108, 97, 83)",
+        opacity:0.6,
+        margin: 10,
+        width: 280
+    },
+    input: {
+        marginLeft: 5,
+        fontStyle: "italic"
     },
     myComments: {
         flexDirection: "row"
