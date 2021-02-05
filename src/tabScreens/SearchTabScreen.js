@@ -55,21 +55,52 @@ const Item = ({ item, onPress, style, bacground }) => (
 export default function SearchTabScreen({ navigation }) {
     const [mySearch, setMySearch] = useState("")
     const [selectedId, setSelectedId] = useState(null)
-    const [resultPost, setResultPost] = useState({ mySearchPost: [] })
+    const [resultPost, setResultPost] = useState({ mySearchPost1: [] })
+    const [state, setState] = useState({ mySearchPost: post });
+    const [allPosts, setAllPosts] = useState({ myAllPosts: [] });
     const [showResults, setShowResults] = useState(false)
 
-    const mySearchHandler = (e) => {
-        setMySearch(e);
-        console.log(mySearch)
-    }  
+    const [showNoResults, setShowNoResults] = useState(false)
 
-    const Result = ( id ) => {
-        const fiterResult = post.filter(e =>  e.id == id );
+    useEffect(() => {
+            const fiterResult = post.filter(e => e.id == selectedId);
+    
+            setResultPost({ mySearchPost1: fiterResult })
+    
+            //console.log(fiterResult)
+            setShowResults(true)
+        
+    }, [selectedId])
+ 
 
-        setResultPost({ mySearchPost: fiterResult })
+    function mySearchHandler(e) {
 
-        console.log(fiterResult)
-        setShowResults(true)      
+        const mySearchItem = e.trim();
+        setMySearch(mySearchItem);
+        //setSelectedId(null)
+
+        if (mySearchItem) {
+            const filteredEnter = post.filter((element) => {
+                return element.title.toLowerCase().indexOf(mySearchItem.toLowerCase()) >= 0
+            });   
+            
+            if (filteredEnter.length === 0) {
+                setShowResults(false);
+                setShowNoResults(true);
+                setState({ mySearchPost: filteredEnter })
+            } else {
+                setShowResults(true);
+                setShowNoResults(false);
+                setState({ mySearchPost: filteredEnter })
+            }
+            
+        } else {
+            //setSelectedId(selectedId);
+            setShowResults(true);
+            setShowNoResults(false);
+            setState({mySearchPost: post})
+        }
+
     }
 
 
@@ -83,7 +114,7 @@ export default function SearchTabScreen({ navigation }) {
           
         <Item
           item={item}
-              onPress={() => { setSelectedId(item.id), Result(item.id) }}
+              onPress={() => setSelectedId(item.id)}
           style={{ backgroundColor }}
           bacground= {myStyleList}
         />
@@ -135,7 +166,7 @@ export default function SearchTabScreen({ navigation }) {
                     >
                         <View style={styles.myContain}>
                             <FlatList
-                                data={post}
+                                data={state.mySearchPost}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.id}
                                 extraData={selectedId}
@@ -149,7 +180,7 @@ export default function SearchTabScreen({ navigation }) {
                             <ScrollView>
 
                                 {
-                                    resultPost.mySearchPost.map((element, index) => (
+                                    resultPost.mySearchPost1.map((element, index) => (
                                         <View key={index}>
                                             <View style={styles.myStylePost}>
                                                 <Text style={styles.myCardSubtitle}>{element.title}</Text>
@@ -169,6 +200,10 @@ export default function SearchTabScreen({ navigation }) {
                                     ))
                                 }
                             </ScrollView>
+                        }
+                        {
+                            showNoResults && 
+                            <Text style={{justifyContent:"center", textAlign:"center"}}>Aucun résultat trouvé...</Text>
                         }
                         
                     </View>
