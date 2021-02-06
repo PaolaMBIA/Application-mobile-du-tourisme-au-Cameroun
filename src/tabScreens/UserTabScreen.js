@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native'
 import { firebase } from '../firebase/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Avatar, Input } from 'react-native-elements';
+
+import { ScrollView } from 'react-native-gesture-handler';
 
 import ImagePicker from 'react-native-image-picker';
+import OwnPost from '../components/OwnPost';
+import { post } from '../Table/Post'
 
 export default function UserTabScreen() {
 
@@ -38,32 +43,35 @@ export default function UserTabScreen() {
     };
     
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Image
-                    style={styles.img}
-                    source={require('../images/default.png')}
-                />
-                <Text>bienvenue <Text style={{"color":"rgb(255,140,0)", "fontSize":20}}>toto</Text></Text>
-                <Ionicons name="log-out-outline" size={30} color="black" onPress={()=>{}} />
-            </View>
+        <ImageBackground source={require('../images/fondBody.jpg')} style={styles.container} blurRadius={0.7}>
             <View style={styles.body}>
+                <View style={styles.header}>
+                    <Avatar
+                        rounded
+                        size={100}
+                        source={require('../images/image.jpeg')}
+                        >
+                        <Avatar.Accessory  />
+                    </Avatar>
+                    <View>
+                        <Text style={{fontSize: 26, color:"whitesmoke" }}>{ firebase.auth().currentUser.displayName}</Text>
+                    </View>
+                </View>
                 <View>
-                    {image !== null ?
-                        (
-                            <Image source={{ uri: image.uri }} style={styles.img} />
-                        )
-                        : <Image
-                            style={styles.img}                            
-                            source={require('../images/default.png')}
-                            
-                        />
-                    }
-                     
-                    <Ionicons name="camera-outline" size={30} color="black" onPress={selectImage} />
+                    <View style={styles.ButtonAddPosts}>
+                        <Ionicons name="add-circle" size={38} color="whitesmoke" />
+                        {/* <Text style={{fontSize: 21, color:"white", fontStyle: "italic"}}>Ajouter une nouvelle pubication</Text> */}
+                    </View>
+                    <ScrollView>
+                        {
+                            post.map((item,index) => (
+                                <OwnPost item={item} index={index} />
+                            ))
+                        }
+                    </ScrollView>
                 </View>
             </View>
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -73,16 +81,26 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     header: {   
-        flexDirection: "row",
-        justifyContent: 'space-around',
+        flexDirection: "column",
+        justifyContent: 'space-evenly',
         alignItems: "center",
-        height: 80,
-        marginTop: 20
+        alignSelf: "center",
+        height: 120,
+        width: 330,
+        marginTop: 40,
+        borderRadius: 10,
+        
+    },
+    ButtonAddPosts: {
+        flexDirection: "row",
+        marginTop: 20,
+        marginBottom:10,
+        alignSelf: "center"
     },
     body: {
         flex: 1,
-        paddingTop: 30,
-        backgroundColor: "white"
+        backgroundColor: "rgb(108, 97, 83)",
+        opacity:0.8,
     },
     input: {
         height: 48,
@@ -96,8 +114,8 @@ const styles = StyleSheet.create({
         paddingLeft: 16
     },
     img : {
-        width: 50,
-        height: 50,
-        borderRadius: 50
+        width: 100,
+        height: 100,
+        borderRadius: 100
     }
 })

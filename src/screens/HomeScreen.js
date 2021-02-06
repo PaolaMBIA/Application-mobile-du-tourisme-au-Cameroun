@@ -10,6 +10,7 @@ import  UserTabScreen  from '../tabScreens/UserTabScreen'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HeaderBackground } from '@react-navigation/stack';
+import NotifTabScreen from '../tabScreens/NotifTabScreen.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +29,8 @@ export default function HomeScreen(props) {
                     iconName = focused ? 'search' : 'search-outline';
                 } else if (route.name === 'Mon compte') {
                     iconName = focused ? 'person' : 'person-outline'
+                } else if (route.name === 'Notif'){
+                    iconName = focused ? 'notifications' : 'notifications-outline'
                 }
 
                 // You can return any component that you like here!
@@ -60,6 +63,7 @@ export default function HomeScreen(props) {
         >
             <Tab.Screen name="Accueil" component={HomeTabScreen} />
             <Tab.Screen name="Recherche" component={SearchTabScreen} />
+            <Tab.Screen name="Notif" component={NotifTabScreen}/>
             <Tab.Screen name="Mon compte" component={UserTabScreen} />
       </Tab.Navigator>
   );
