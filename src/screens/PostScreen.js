@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { Text, View, StyleSheet, Button, Image, TouchableOpacity, ImageBackground, SafeAreaView } from 'react-native'
-
+import { Text, View, StyleSheet, Button, Image, TouchableOpacity, ImageBackground, TextInput } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import Card from '../components/Card.js';
@@ -9,17 +9,17 @@ import { firebase } from '../firebase/config';
 
 import {post} from '../Table/Post'
 
-export default function HomeTabScreen({navigation}) {
+export default function PostScreen({navigation}) {
     const [state, setState] = useState({ myPost: [] });
 
     function open() {
         firebase.auth().signOut().then(()=>navigation.navigate('Login'))
     }
-    const user = null;
+
     
     return (
         <ImageBackground source={require('../images/fondBody.jpg')} style={styles.container} blurRadius={0.7}>
-            <SafeAreaView style={styles.header}>
+            <View style={styles.header}>
                 <View style={styles.profil}>
                     <Image
                         style={styles.img}
@@ -27,20 +27,49 @@ export default function HomeTabScreen({navigation}) {
                     />
                     <Text style={{ "color": "rgb(29, 84, 84)", "fontSize": 25, "fontStyle": "italic" }}>{ firebase.auth().currentUser.displayName}</Text>
                 </View>
-                <View style={styles.profilIcon}>
-                    <Ionicons name="log-out-outline" style={styles.myIcon} size={30} onPress={() => firebase.auth().signOut().then(() => navigation.navigate('Login', { user: null }))}/>
-                </View>
-            </SafeAreaView>
-            <SafeAreaView style={styles.body}>
+            </View>
+            <View style={styles.body}>
                 
                 <ScrollView>
-                    {
-                        post.map((item,index) => (
-                            <Card item={item} index={index} />
-                        ))
-                    }
+                   <KeyboardAwareScrollView
+                    style={{ flex: 1, width: '100%' }}
+                    keyboardShouldPersistTaps="always">
+
+                    <View style={styles.containerInput}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='E-mail'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setEmail(text)}
+                            //value={email}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="#aaaaaa"
+                            secureTextEntry
+                            placeholder='Mot de passe'
+                            onChangeText={(text) => setPassword(text)}
+                           // value={password}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        {/* {
+                            showError &&
+                            <Text style={{ "color": "red" }}>{error}</Text>
+                        } */}
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => onLoginPress()}>
+                            <Text style={styles.buttonTitle}>Se connecter</Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAwareScrollView>
+                
+
                 </ScrollView>
-            </SafeAreaView>
+            </View>
         </ImageBackground>
     )
 }

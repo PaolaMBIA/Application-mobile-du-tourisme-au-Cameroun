@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegisterScreen } from './src/screens'
+import { LoginScreen, HomeScreen, RegisterScreen, PostScreen } from './src/screens'
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
@@ -30,7 +30,7 @@ export default function App() {
             setUser(userData)
           })
           .catch((err) => {
-            setLoading(false)
+            setLoading(true)
           });
       } else {
         setLoading(false)
@@ -52,10 +52,15 @@ export default function App() {
         screenOptions={{
         headerShown: false
       }}>
-        { user ? (
-          <Stack.Screen name="Home">
-            {props => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
+        {user ? (
+          <>
+            <Stack.Screen name="Home">
+              {props => <HomeScreen {...props} extraData={user} />}
+            </Stack.Screen>
+            <Stack.Screen name="post">
+              {props => <PostScreen {...props} />}
+            </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />

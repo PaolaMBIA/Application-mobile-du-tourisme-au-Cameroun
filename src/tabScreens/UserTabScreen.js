@@ -4,13 +4,13 @@ import { firebase } from '../firebase/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar, Input } from 'react-native-elements';
 
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 import ImagePicker from 'react-native-image-picker';
 import OwnPost from '../components/OwnPost';
 import { post } from '../Table/Post'
 
-export default function UserTabScreen() {
+export default function UserTabScreen({navigation}) {
 
     const [image, setImage] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -58,10 +58,10 @@ export default function UserTabScreen() {
                     </View>
                 </View>
                 <View>
-                    <View style={styles.ButtonAddPosts}>
+                    <TouchableOpacity style={styles.ButtonAddPosts} onPress={()=>navigation.navigate('post')}>
                         <Ionicons name="add-circle" size={38} color="whitesmoke" />
                         {/* <Text style={{fontSize: 21, color:"white", fontStyle: "italic"}}>Ajouter une nouvelle pubication</Text> */}
-                    </View>
+                    </TouchableOpacity>
                     <ScrollView>
                         {
                             post.map((item,index) => (

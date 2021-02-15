@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet, SafeAreaView } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { RegisterScreen } from '.';
 
@@ -48,7 +48,7 @@ export default function LoginScreen({navigation}) {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             { showLoginScreen ?
                 <KeyboardAwareScrollView
                     style={{ flex: 1, width: '100%' }}
@@ -98,7 +98,7 @@ export default function LoginScreen({navigation}) {
                 </KeyboardAwareScrollView>
                 : <RegisterScreen setShowLoginScreen={setShowLoginScreen}/>
             }
-        </View>
+        </SafeAreaView>
     )
 }
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ImageBackground } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ImageBackground, SafeAreaView } from 'react-native'
 import { firebase } from '../firebase/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -31,22 +31,23 @@ const test = [
     },
 ]
 
-const Item = ({ item, onPress, style, bacground }) => (
+const Item = ({ item, onPress, style, bacground, borderTopEndRadius, borderBottomEndRadius, myBottomBackground }) => (
     <View style={styles.myContainList}>
         <TouchableOpacity onPress={onPress} style={[styles.myItem, style]}>
-            {/* <View style={[styles.myTopStyleList, {backgroundColor: bacground}]}></View>
-            <View style={[styles.myTopStyleList2]}></View> */}
+            <View style={[styles.myTopStyleList, {backgroundColor: myBottomBackground, borderBottomEndRadius: borderBottomEndRadius}]}></View>
+            <View style={[styles.myTopStyleList2, {backgroundColor: bacground}]}></View>
             <Text >{item.title}</Text>
             {
-                item.picturePost.slice(0,1).map(e => (
+                item.picturePost.slice(0,1).map((e,id) => (
                     <Image
+                        key={id}
                     style={styles.myImagePost}
                         source={{ uri: e }}
                     />
                 ))
             }
-            {/* <View style={[styles.myStyleList, {backgroundColor: bacground}]}></View>
-            <View style={[styles.myStyleList2]}></View> */}
+            <View style={[styles.myStyleList, {backgroundColor: myBottomBackground, borderTopEndRadius: borderTopEndRadius}]}></View>
+            <View style={[styles.myStyleList2, {backgroundColor: bacground}]}></View>
         </TouchableOpacity>
     </View>
 );
@@ -61,6 +62,8 @@ export default function SearchTabScreen({ navigation }) {
     const [showResults, setShowResults] = useState(false)
 
     const [showNoResults, setShowNoResults] = useState(false)
+    const scroll = useRef();
+
 
     useEffect(() => {
             const fiterResult = post.filter(e => e.id == selectedId);
@@ -107,24 +110,37 @@ export default function SearchTabScreen({ navigation }) {
 
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "rgba(245,245,245,0.8)" : "transparent";
-        //const borderTopEndRadius = item.id === selectedId ? 0 : 15;
-        const myStyleList = item.id === selectedId ? "transparent" : "rgba(245,245,245,0.9)"
+        const borderTopEndRadius = item.id === selectedId ? 15 : 0;
+        const borderBottomEndRadius = item.id === selectedId ? 15 : 0;
+        const myStyleList = item.id === selectedId ? "rgba(245,245,245,0.8)" : "transparent"
+        const myBottomBackground = item.id === selectedId ? "rgba(29, 84, 84, 0.77)" : "transparent"
   
       return (
           
         <Item
           item={item}
               onPress={() => setSelectedId(item.id)}
-          style={{ backgroundColor }}
-          bacground= {myStyleList}
+          style={{ backgroundColor}}
+              bacground={myStyleList}
+              borderTopEndRadius={borderTopEndRadius}
+              borderBottomEndRadius={borderBottomEndRadius}
+              myBottomBackground ={myBottomBackground}
         />
       );
     };
 
+    const ScrollEndView = () => {
+        scroll.current.scrollToEnd({animated:true})      
+    }
+
+    const ScrollStartView = () => {
+        scroll.current.scrollToIndex({index:0,animated:true}) 
+    }
+
 
     return (
         <ImageBackground source={require('../images/fondBody.jpg')} style={styles.container} blurRadius={0.7}>
-            <View style={styles.header}>
+            <SafeAreaView style={styles.header}>
                 <View style={styles.profil}>
                     <Image
                         style={styles.img}
@@ -133,10 +149,10 @@ export default function SearchTabScreen({ navigation }) {
                     <Text style={{ "color": "rgb(29, 84, 84)", "fontSize": 25, "fontStyle": "italic"  }}>{ firebase.auth().currentUser.displayName}</Text>
                 </View>
                 <View style={styles.profilIcon}>
-                    <Ionicons name="log-out-outline" style={styles.myIcon} size={30} onPress={()=>firebase.auth().signOut().then(()=>navigation.navigate('Login'))} />
+                    <Ionicons name="log-out-outline" style={styles.myIcon} size={30} onPress={() => firebase.auth().signOut().then(() => navigation.navigate('Login', { user: null }))} />
                 </View>
-            </View>
-            <View style={styles.body}>
+            </SafeAreaView>
+            <SafeAreaView style={styles.body}>
                 <View>
                     <SearchBar
                         placeholder="Je recherche..."
@@ -162,17 +178,25 @@ export default function SearchTabScreen({ navigation }) {
                 <View style={styles.myScroll}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
                         style={styles.myFlatList}
+                        
                     >
+                        <TouchableOpacity onPress={ScrollStartView}>
+                            <Ionicons style={{alignSelf: "center", marginVertical: 4}} name="chevron-up-circle-outline" size={30} color="whitesmoke" />                          
+                        </TouchableOpacity>
                         <View style={styles.myContain}>
                             <FlatList
                                 data={state.mySearchPost}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.id}
                                 extraData={selectedId}
-                                
+                                ref={scroll}
                             />
                         </View>
+                        <TouchableOpacity onPress={ScrollEndView}>
+                            <Ionicons style={{alignSelf: "center"}} name="chevron-down-circle-outline" size={30} color="whitesmoke" />                          
+                        </TouchableOpacity>
                     </ScrollView>
                     <View style={styles.myResult}>
                         {
@@ -209,7 +233,7 @@ export default function SearchTabScreen({ navigation }) {
                     </View>
                 </View>
 
-            </View>
+            </SafeAreaView>
         </ImageBackground>
     )
 }
@@ -266,7 +290,7 @@ const styles = StyleSheet.create({
     },
     myFlatList: {
         backgroundColor: "rgba(29, 84, 84, 0.8)",
-        //borderTopRightRadius: 15,
+        borderTopRightRadius: 25,
     },
     input: {
         height: 48,
@@ -297,17 +321,19 @@ const styles = StyleSheet.create({
     myScroll: {
         flex:1,
         flexDirection: "row",
+        backgroundColor: "rgba(245,245,245,0.9)",
     },
     myContain: {
         //backgroundColor: "rgb(29, 84, 84)",
         borderTopRightRadius: 15,
+        height: 450
     },
     myList: {
         backgroundColor: "red",
         
     },
     myResult: {
-        backgroundColor: "rgba(245,245,245,0.9)",
+        //backgroundColor: "rgba(245,245,245,0.9)",
         width: 240,
         paddingLeft:10
     },
@@ -324,39 +350,44 @@ const styles = StyleSheet.create({
     },
     myStyleList: {
         position: "absolute",
-        bottom: 0,
-        right:0,
-        height: 15,
-        width: 15,
-        borderBottomEndRadius: 15,
-        //backgroundColor: "rgba(245,245,245,0.9)",
-    },
-    myStyleList2: {
-        position: "absolute",
-        bottom: 0,
+        bottom: -15,
         right:0,
         height: 15,
         width: 15,
         //borderBottomEndRadius: 15,
-        backgroundColor: "rgba(245,245,245,0.9)"
-        //backgroundColor: "transparent",     
+        //backgroundColor: "rgba(29, 84, 84, 0.8)",
+        zIndex: 2,
+    },
+    myStyleList2: {
+        position: "absolute",
+        bottom: -15,
+        right:0,
+        height: 15,
+        width: 15,
+        //borderBottomEndRadius: 15,
+        //backgroundColor: "rgba(245,245,245,0.8)"
+        //backgroundColor: "transparent",  
+        zIndex: 1,
         
     },
     myTopStyleList: {
         position: "absolute",
-        top: 0,
+        top: -15,
         right:0,
         height: 15,
         width: 15,
-       // borderTopRightRadius: 15,
-        //backgroundColor: "rgba(29, 84, 84,0.2)",
+        //borderBottomEndRadius: 15,
+        //backgroundColor: "rgba(29, 84, 84, 0.8)",
+        zIndex: 2,
     },
     myTopStyleList2: {
         position: "absolute",
-        top: 0,
+        top: -15,
         right:0,
         height: 15,
-        width: 15,     
-        //backgroundColor: "rgba(245,245,245,0.9)",
+        width: 15,
+        //borderBottomEndRadius: 15,
+        //backgroundColor: "rgba(245,245,245,0.8)"
+        backgroundColor: "transparent",
     }
 })

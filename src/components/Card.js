@@ -103,7 +103,8 @@ export default function Card({item, index}) {
                             onChangeText={(text) => setComments(text)}
                             value={comments}
                             underlineColorAndroid="transparent"
-                            autoCapitalize="none"
+                              autoCapitalize="none"
+                              type="textarea"
                           />
                           <Ionicons style={styles.styleIcon} name="send" size={20} color="whitesmoke" />
                       </KeyboardAwareScrollView>
@@ -209,8 +210,9 @@ const styles = StyleSheet.create({
         borderColor: "transparent",
         backgroundColor: "rgb(108, 97, 83)",
         opacity:0.6,
-        margin: 10,
-        width: 280
+        //margin: 10,
+        width: 280,
+        height:80
     },
     input: {
         marginLeft: 5,
