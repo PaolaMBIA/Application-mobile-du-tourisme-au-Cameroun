@@ -4,6 +4,7 @@ Le tourisme au cameroun n'étant pas mis en avant, j'ai décidé de développer 
 
 Cette application est développée sur **React Native** et avec **Firebase** comme base de données.
 
+## Pages réalisées 
 
 | Inscription | Connexion |
 |-------------|-----------|
@@ -12,3 +13,8 @@ Cette application est développée sur **React Native** et avec **Firebase** com
 | Accueil | Recherche |
 |-------------|-----------|
 |<img width=300 src="https://github.com/PaolaMBIA/Application-mobile-du-tourisme-au-Cameroun/blob/main/pageAccueil.jpeg"/> | <img width=300 src="https://github.com/PaolaMBIA/Application-mobile-du-tourisme-au-Cameroun/blob/main/pageRecherche.jpg"/> |
+
+
+## Récupérer le projet
+
+- 
