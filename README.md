@@ -17,4 +17,5 @@ Cette application est développée sur **React Native** et avec **Firebase** com
 
 ## Récupérer le projet
 
-- 
+- Faire `git clone https://github.com/PaolaMBIA/Application-mobile-du-tourisme-au-Cameroun.git`
+- Dans le terminal du repertoire dans lequel vous avez cloné le projet, lancer la commande `yarn` ou `npm install` pour installer toutes les dépendances
