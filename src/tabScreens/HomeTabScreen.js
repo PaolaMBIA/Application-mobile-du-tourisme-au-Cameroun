@@ -33,7 +33,7 @@ export default function HomeTabScreen({navigation}) {
             </SafeAreaView>
             <SafeAreaView style={styles.body}>
                 
-                <ScrollView>
+                <ScrollView style={styles.myScrollView}>
                     {
                         post.map((item,index) => (
                             <Card item={item} index={index} />
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: "rgb(108, 97, 83)",
-        opacity:0.8,
+        opacity: 0.8,
     },
-    body1: {
+    myScrollView: {
 
-        
+       // height:100
     },
     input: {
         height: 48,

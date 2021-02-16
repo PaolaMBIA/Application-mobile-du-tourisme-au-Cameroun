@@ -29,7 +29,7 @@ export default function HomeScreen(props) {
                     iconName = focused ? 'search' : 'search-outline';
                 } else if (route.name === 'Mon compte') {
                     iconName = focused ? 'person' : 'person-outline'
-                } else if (route.name === 'Notif'){
+                } else if (route.name === 'Notification'){
                     iconName = focused ? 'notifications' : 'notifications-outline'
                 }
 
@@ -43,19 +43,18 @@ export default function HomeScreen(props) {
                 inactiveTintColor: 'white',
                 //activeBackgroundColor: "white",
                 //tabStyle:{height:50},
+                tabBarVisible: false,
+                safeAreaInsets: {
+                    bottom:0
+                },
                 style: {
-                   backgroundColor: "rgb(108, 97, 83)",
-                    opacity: 0.7,  
+                   backgroundColor: "rgba(108, 97, 83,0.7)",
+                    //opacity: 0.4,  
                     //borderWidth: 2,
                     elevation: 0,
                     shadowOpacity: 0,
-                    borderColor:'#ccc'
-                },
-                indicatorStyle: {
-                    backgroundColor: 'blue',
-                    width: 50,
-                    borderWidth: 2,
-                    left:"18%"
+                    borderTopColor: 'rgba(245,245,245,0.01)',
+              
                 },
 
           }}
@@ -63,7 +62,7 @@ export default function HomeScreen(props) {
         >
             <Tab.Screen name="Accueil" component={HomeTabScreen} />
             <Tab.Screen name="Recherche" component={SearchTabScreen} />
-            <Tab.Screen name="Notif" component={NotifTabScreen}/>
+            <Tab.Screen name="Notification" component={NotifTabScreen}/>
             <Tab.Screen name="Mon compte" component={UserTabScreen} />
       </Tab.Navigator>
   );

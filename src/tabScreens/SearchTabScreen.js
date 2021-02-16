@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ImageBackgro
 import { firebase } from '../firebase/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { LinearGradient} from 'expo-linear-gradient';
 import { SearchBar } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -109,11 +110,11 @@ export default function SearchTabScreen({ navigation }) {
 
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "rgba(245,245,245,0.8)" : "transparent";
+        const backgroundColor = item.id === selectedId ? "rgba(245,245,245,0.7)" : "transparent";
         const borderTopEndRadius = item.id === selectedId ? 15 : 0;
         const borderBottomEndRadius = item.id === selectedId ? 15 : 0;
-        const myStyleList = item.id === selectedId ? "rgba(245,245,245,0.8)" : "transparent"
-        const myBottomBackground = item.id === selectedId ? "rgba(29, 84, 84, 0.77)" : "transparent"
+        const myStyleList = item.id === selectedId ? "rgba(245,245,245,0.7)" : "transparent"
+        const myBottomBackground = item.id === selectedId ? "rgba(29, 84, 84, 0.8)" : "transparent"
   
       return (
           
@@ -141,41 +142,61 @@ export default function SearchTabScreen({ navigation }) {
     return (
         <ImageBackground source={require('../images/fondBody.jpg')} style={styles.container} blurRadius={0.7}>
             <SafeAreaView style={styles.header}>
-                <View style={styles.profil}>
-                    <Image
-                        style={styles.img}
-                        source={require('../images/image.jpeg')}
-                    />
-                    <Text style={{ "color": "rgb(29, 84, 84)", "fontSize": 25, "fontStyle": "italic"  }}>{ firebase.auth().currentUser.displayName}</Text>
-                </View>
-                <View style={styles.profilIcon}>
-                    <Ionicons name="log-out-outline" style={styles.myIcon} size={30} onPress={() => firebase.auth().signOut().then(() => navigation.navigate('Login', { user: null }))} />
+                <View style={styles.myheader}>
+                    <View style={styles.profil}>
+                        <Image
+                            style={styles.img}
+                            source={require('../images/image.jpeg')}
+                        />
+                        <Text style={{ "color": "rgb(29, 84, 84)", "fontSize": 25, "fontStyle": "italic"  }}>{ firebase.auth().currentUser.displayName}</Text>
+                    </View>
+                    <View style={styles.profilIcon}>
+                        <Ionicons name="log-out-outline" style={styles.myIcon} size={30} onPress={() => firebase.auth().signOut().then(() => navigation.navigate('Login', { user: null }))} />
+                    </View>
                 </View>
             </SafeAreaView>
+            <SafeAreaView style={styles.mySearch}>
+                <SearchBar
+                    placeholder="Je recherche..."
+                    onChangeText={mySearchHandler}
+                    value={mySearch}
+                    searchIcon={{
+                        color: "whitesmoke",
+                        size: 30
+                    }}
+                    containerStyle={{
+                        paddingTop: -15,
+                        paddingBottom: 15,
+                        paddingLeft: 30,
+                        //backgroundColor: "rgba(245,245,245,0.9)",
+                        backgroundColor: "transparent",
+                        opacity:0.8,
+                        borderBottomColor: "transparent",
+                        borderTopColor: "transparent",
+                        width: 260,
+                        alignSelf: 'center'
+                    }}
+                    inputContainerStyle={{
+                        backgroundColor: "transparent",
+                        borderBottomWidth:2,
+                        borderColor: 'transparent',
+                        borderBottomColor: 'whitesmoke',
+                        height: 30,
+                        
+                    }}
+                    inputStyle={{
+                        fontStyle: "italic"
+                    }}                       
+                />                 
+            </SafeAreaView>
             <SafeAreaView style={styles.body}>
-                <View>
-                    <SearchBar
-                        placeholder="Je recherche..."
-                        onChangeText={mySearchHandler}
-                        value={mySearch}
-                        containerStyle={{
-                            paddingBottom: 30,
-                            backgroundColor: "rgba(245,245,245,0.9)",
-                            borderBottomColor: "transparent",
-                            borderTopColor: "transparent"
-                        }}
-                        inputContainerStyle={{
-                            backgroundColor: "rgb(29, 84, 84)",
-                            borderWidth:2,
-                            borderColor: 'rgb(29, 84, 84)',
-                            height:20
-                        }}
-                        inputStyle={{
-                            fontStyle: "italic"
-                        }}                       
-                    />                 
-                </View>
-                <View style={styles.myScroll}>
+                <LinearGradient
+                    style={styles.myScroll}
+                    colors={["transparent","rgba(245,245,245,0.8)", "rgba(245,245,245,0.8)", "rgba(245,245,245,0.8)", "rgba(245,245,245,0.6)", "rgba(245,245,245,0.6)"]}
+                    start={{ x: 0.8, y: 0.001 }}
+                    end={{ x: 0.8, y: 1 }}
+                    
+                >
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
@@ -183,7 +204,7 @@ export default function SearchTabScreen({ navigation }) {
                         
                     >
                         <TouchableOpacity onPress={ScrollStartView}>
-                            <Ionicons style={{alignSelf: "center", marginVertical: 4}} name="chevron-up-circle-outline" size={30} color="whitesmoke" />                          
+                            <Ionicons style={{alignSelf: "center", marginVertical: 4}} name="chevron-up-outline" size={30} color="rgba(245,245,245,0.8)" />                          
                         </TouchableOpacity>
                         <View style={styles.myContain}>
                             <FlatList
@@ -195,7 +216,7 @@ export default function SearchTabScreen({ navigation }) {
                             />
                         </View>
                         <TouchableOpacity onPress={ScrollEndView}>
-                            <Ionicons style={{alignSelf: "center"}} name="chevron-down-circle-outline" size={30} color="whitesmoke" />                          
+                            <Ionicons style={{alignSelf: "center"}} name="chevron-down-outline" size={30} color="rgba(245,245,245,0.8)" />                          
                         </TouchableOpacity>
                     </ScrollView>
                     <View style={styles.myResult}>
@@ -231,7 +252,7 @@ export default function SearchTabScreen({ navigation }) {
                         }
                         
                     </View>
-                </View>
+                </LinearGradient>
 
             </SafeAreaView>
         </ImageBackground>
@@ -247,7 +268,15 @@ const styles = StyleSheet.create({
         height: 100,
         paddingTop: 20,
         backgroundColor: "rgb(108, 97, 83)",
-        opacity:0.87,
+        opacity:0.8,
+    },
+    mySearch: {
+        backgroundColor: "rgb(108, 97, 83)",
+        opacity:0.8,
+    },
+    myheader: {
+        height: "100%",
+        //backgroundColor: "rgba(245,245,245,0.9)",
         justifyContent:'space-between',
         flexDirection: "row",
     },
@@ -269,11 +298,12 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: "rgb(108, 97, 83)",
-        opacity:0.8,
+        opacity: 0.8,
     },
     myCardSubtitle:{
         fontSize: 20,
         color: "rgb(29, 84, 84)",
+        fontWeight:"bold",
         textAlign: "center",
         marginBottom: 15,
         fontFamily: "sans-serif-condensed"
@@ -290,7 +320,9 @@ const styles = StyleSheet.create({
     },
     myFlatList: {
         backgroundColor: "rgba(29, 84, 84, 0.8)",
-        borderTopRightRadius: 25,
+        borderTopRightRadius: 15,
+        //borderBottomRightRadius: 15,
+        //marginBottom: 50
     },
     input: {
         height: 48,
@@ -321,7 +353,8 @@ const styles = StyleSheet.create({
     myScroll: {
         flex:1,
         flexDirection: "row",
-        backgroundColor: "rgba(245,245,245,0.9)",
+        //backgroundColor: "rgba(245,245,245,0.9)",
+        paddingTop: 8
     },
     myContain: {
         //backgroundColor: "rgb(29, 84, 84)",

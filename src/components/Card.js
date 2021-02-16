@@ -5,6 +5,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar, Input} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import Textarea from 'react-native-textarea';
+import { SafeAreaView } from 'react-native';
+import { color } from 'react-native-reanimated';
+
 export default function Card({item, index}) {
 
     const [showComments, setShowComments] = useState(false);
@@ -95,18 +99,20 @@ export default function Card({item, index}) {
                   }
                   {
                       showComments &&
-                      <KeyboardAwareScrollView style={styles.myNewCommentsRow}>
-                          <TextInput
-                            style={styles.input}
-                            placeholder='Ajouter un commentaire ...'
-                            placeholderTextColor="whitesmoke"
-                            onChangeText={(text) => setComments(text)}
-                            value={comments}
-                            underlineColorAndroid="transparent"
-                              autoCapitalize="none"
-                              type="textarea"
-                          />
-                          <Ionicons style={styles.styleIcon} name="send" size={20} color="whitesmoke" />
+                      <KeyboardAwareScrollView>
+                          <SafeAreaView style={styles.myNewCommentsRow}>
+                                <Textarea
+                                style={styles.input}
+                                placeholder='Ajouter un commentaire ...'
+                                placeholderTextColor="whitesmoke"
+                                onChangeText={(text) => setComments(text)}
+                                value={comments}
+                                underlineColorAndroid="transparent"
+                                    autoCapitalize="none"
+                                    type="textarea"
+                                />
+                          </SafeAreaView>
+                          <Ionicons style={styles.styleIcon} name="send" size={30} color="rgba(29, 84, 84, 0.9)" />
                       </KeyboardAwareScrollView>
                   }
                 </View>
@@ -186,13 +192,12 @@ const styles = StyleSheet.create({
 
     styleIcon: {
         position: "absolute",
-        top: 1,
-        right: 2, 
-        transform: [{
-            
+        top: 5,
+        right: 15, 
+        transform: [{     
             rotateX: "50deg"
         }, {
-            rotateY: "-30deg"
+            rotateY: "-15deg"
         }, {
             rotateZ: "-20deg"
         }]
@@ -212,11 +217,12 @@ const styles = StyleSheet.create({
         opacity:0.6,
         //margin: 10,
         width: 280,
-        height:80
+        height:60
     },
     input: {
-        marginLeft: 5,
-        fontStyle: "italic"
+        margin: 8,
+        fontStyle: "italic",
+        color: "black"
     },
     myComments: {
         flexDirection: "row"
